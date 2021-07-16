@@ -1,0 +1,42 @@
+.moviesWrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.movies{
+    display: flex;
+    max-width: 1200px;
+    overflow: auto;
+}
+.pointer{
+    cursor: pointer;
+}
+
+.center{
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+.moviesData{
+
+}
+.input{
+    border-radius: 10px;
+    width: 100%;
+    text-align: center;
+}
+.height{
+    min-height: 100px;
+}
+.postButtonWrapper{
+    display: flex;
+    justify-content: flex-end;
+    margin: 10px;
+}
+
+.postButton{
+    border: 2px black solid;
+    border-radius: 50%;
+    padding: 20px;
+}
