@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { setMovies } from '../../actions';
-import { FEATURED_API } from '../../Pages/Movies/Movies';
+import { FEATURED_API, SEARCH_API } from '../../Pages/Movies/Movies';
 import './Movie.css'
 
 function Movie({movie}) {
@@ -21,7 +21,7 @@ function Movie({movie}) {
                     const moviesObj= await moviesRes.json();
                     const moviesArray=moviesObj.results
                     const filterArray= moviesArray.filter((movie)=>{
-                        if( (movie.title.replace(/ .*/,'')==first) || (getLastWord(movie.title)==last)){
+                        if( (movie.title.replace(/ .*/,'')==first) || (getLastWord(movie.title)==last) || (movie.title.replace(/ .*/,'')==last) || (getLastWord(movie.title)==first)){
                                 return movie
                         }
                         
@@ -35,6 +35,29 @@ function Movie({movie}) {
         console.log(moviesObj)
         // setMovies(moviesObj.results)
     }
+
+    const getMoviesF2= async (first, last)=>{
+        if(first || last){
+            dispatch(setMovies([]))
+                    const moviesRes= await fetch(SEARCH_API + first);
+                    const moviesObj= await moviesRes.json();
+                    const moviesArray=moviesObj.results
+                    const filterArray= moviesArray.filter((movie)=>{
+                        if( (movie.title.replace(/ .*/,'')==first) || (getLastWord(movie.title)==last)){
+                                return movie
+                        }
+                        
+                    })
+                    dispatch(setMovies(filterArray.reverse()))
+                  return  console.log(filterArray)
+                    // setMovies(filterArray)
+                }
+        const moviesRes= await fetch(FEATURED_API);
+        const moviesObj= await moviesRes.json();
+        console.log(moviesObj)
+        // setMovies(moviesObj.results)
+    }
+
 
     
 
@@ -69,7 +92,9 @@ function Movie({movie}) {
         //now get the first word or last word of title and set the movies to that which contains those 2 words
         getFirstWord(movieObj.title)
         console.log(getLastWord(movieObj.title))
-        getMoviesF(getFirstWord(movieObj.title), getLastWord(movieObj.title))
+        // getMoviesF(getFirstWord(movieObj.title), getLastWord(movieObj.title))
+        getMoviesF2(getFirstWord(movieObj.title), getLastWord(movieObj.title))
+
 
         
          
