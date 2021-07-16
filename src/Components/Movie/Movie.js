@@ -17,6 +17,7 @@ function Movie({movie}) {
 
     const getMoviesF= async (first, last)=>{
         if(first || last){
+            dispatch(setMovies([]))
                     const moviesRes= await fetch(FEATURED_API);
                     const moviesObj= await moviesRes.json();
                     const moviesArray=moviesObj.results
@@ -43,12 +44,12 @@ function Movie({movie}) {
                     const moviesObj= await moviesRes.json();
                     const moviesArray=moviesObj.results
                     const filterArray= moviesArray.filter((movie)=>{
-                        if( (movie.title.replace(/ .*/,'')==first) || (getLastWord(movie.title)==last)){
+                        if( (movie.title.replace(/ .*/,'')==first) || (getLastWord(movie.title)==last) ){
                                 return movie
                         }
                         
                     })
-                    dispatch(setMovies(filterArray.reverse()))
+                    dispatch(setMovies(filterArray))
                   return  console.log(filterArray)
                     // setMovies(filterArray)
                 }
@@ -101,22 +102,26 @@ function Movie({movie}) {
     }
 
  
-
+    const try1=true;
     useEffect(()=>{       
         getDropDownMovies()
         // getFirstWord(title)
     },[])
     return (
         <div className="movie">
-             <div>
-               <span>Select Category </span>
+             <div className="selectWrapper" >
+               <span>Select Movie </span>
            <select onChange={setMovie} style={{margin:"10px", padding:"5px"}} id={id} name="category" 
            value={titleOpt}
         //    ref={register({required: true})}
            >
-              {ddMovies.length>0 && ddMovies.map((movie)=>{
+              {ddMovies.length>0 && ddMovies.map((movie, key)=>{
+                  if(key==0){
+                      movie.title= titleOpt
+                  }
+                 
                return  (
-                   <option  value={JSON.stringify(movie)} >{movie.title}</option>
+                   <option  value={JSON.stringify(movie)} >{  movie.title}</option>
                );
                   
               })}
