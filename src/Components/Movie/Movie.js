@@ -276,7 +276,7 @@ function Movie({movie, selectMovie, key, right, left, mid, selectedMovie}) {
              {
                left &&
                <div>
-                    <img onClick={()=>{setMovie()}}  src={IMG_API + ddMoviesLeft[1]?.poster_path} alt={titleOpt} />
+                    <img   src={IMG_API + ddMoviesLeft[1]?.poster_path} alt={titleOpt} />
             <div className="movie info">
                 <h3>{ddMoviesLeft[1]?.title}</h3>
                 <h4>Ratings: {ddMoviesLeft[1]?.vote_average}</h4>
@@ -288,7 +288,7 @@ function Movie({movie, selectMovie, key, right, left, mid, selectedMovie}) {
            {
                mid &&
                <div>
-                    <img onClick={()=>{setMovie()}}  src={IMG_API + selectedMovie?.poster_path} alt={titleOpt} />
+                    <img   src={IMG_API + selectedMovie?.poster_path} alt={titleOpt} />
             <div className="movie info">
                 <h3>{ selectedMovie?.title}</h3>
                 <h4>Ratings: { selectedMovie?.vote_average}</h4>
@@ -301,7 +301,7 @@ function Movie({movie, selectMovie, key, right, left, mid, selectedMovie}) {
 {
                right &&
                <div>
-                    <img onClick={()=>{setMovie()}}  src={IMG_API + dr[0]?.poster_path} alt={titleOpt} />
+                    <img  src={IMG_API + dr[0]?.poster_path} alt={titleOpt} />
             <div className="movie info">
                 <h3>{dr[0]?.title}</h3>
                 <h4>Ratings: {dr[0]?.vote_average}</h4>

@@ -36,12 +36,12 @@ function Movies() {
       });
       clearInputs()
     const postObj= {
-        title: selectedMovie.title,
-        interest: interest,
-        synopsis: synopsis
+        MovieTitle: selectedMovie.title,
+        PostTitle: interest,
+        Synopsis: synopsis
     }
     const postObj2= JSON.stringify(postObj)
-    const response = await fetch("https://reqbin.com/echo/post/json", {
+    const response = await fetch("http://cinemashers.com/api/cinemash/", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -61,7 +61,7 @@ function Movies() {
   const clearInputs=()=>{
     setInterest('')
     setSynopsis('')
-    setSelectedMovie('')
+    // setSelectedMovie('')
   }
 
   useEffect(() => {
@@ -76,7 +76,7 @@ function Movies() {
           {movies.map((movie, key) => {
           if(key<3){
             return (
-              <div className={key==1?"pointer":""} >
+              <div className={key==1?"":""} >
                 <Movie movie={movie} right={(key==2)?true:false}  left={(key==0)?true:false} mid={(key==1)?true:false} selectMovie={selectMovie} selectedMovie={selectedMovie} />
               </div>
             );
