@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux';
-import { setMovies } from '../../actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { setDropMoviesRight, setMovies } from '../../actions';
 import { FEATURED_API, SEARCH_API } from '../../Pages/Movies/Movies';
 import './Movie.css'
 
-function Movie({movie, selectMovie, key, right, left, mid}) {
+function Movie({movie, selectMovie, key, right, left, mid, selectedMovie}) {
     const {title, poster_path, vote_average, id, overview}= movie
     const IMG_API= "HTTPS://image.tmdb.org/t/p/w1280";
 
@@ -17,28 +17,8 @@ function Movie({movie, selectMovie, key, right, left, mid}) {
     const [voteAverageOpt, setVoteAverageOpt]= useState(vote_average)
     const [overviewOpt, setOverviewOpt]= useState(overview)
     const dispatch= useDispatch()
-
-    const getMoviesF= async (first, last)=>{
-        if(first || last){
-            dispatch(setMovies([]))
-                    const moviesRes= await fetch(FEATURED_API);
-                    const moviesObj= await moviesRes.json();
-                    const moviesArray=moviesObj.results
-                    const filterArray= moviesArray.filter((movie)=>{
-                        if( (movie.title.replace(/ .*/,'')==first) || (getLastWord(movie.title)==last) || (movie.title.replace(/ .*/,'')==last) || (getLastWord(movie.title)==first)){
-                                return movie
-                        }
-                        
-                    })
-                    dispatch(setMovies(filterArray))
-                  return  filterArray
-                    // setMovies(filterArray)
-                }
-        const moviesRes= await fetch(FEATURED_API);
-        const moviesObj= await moviesRes.json();
-        // console.log(moviesObj)
-        // setMovies(moviesObj.results)
-    }
+    const dr = useSelector((state)=> state.ddRight)
+ 
 
     const getMoviesF2= async (first, last)=>{
         if(first || last){
@@ -53,6 +33,7 @@ function Movie({movie, selectMovie, key, right, left, mid}) {
                         
                     })
                     dispatch(setMovies(filterArray))
+                   
                     getMoviesLeft(first)
                     getMoviesRight(last)
                   return  filterArray
@@ -94,6 +75,7 @@ function Movie({movie, selectMovie, key, right, left, mid}) {
                     const moviesRes= await fetch(SEARCH_API + last);
                     const moviesObj= await moviesRes.json();
                     const moviesArray=moviesObj.results
+                    var tempArr=[]
                     const filterArray= moviesArray.filter((movie)=>{
                         // const get= getFirstWord(movie.title.replace(/ .*/,''))
                         // console.log(`thisssssss first from array: ${get} & last we search: ${last}`)
@@ -102,14 +84,16 @@ function Movie({movie, selectMovie, key, right, left, mid}) {
                         //         return movie
                         // }
                         console.log(`we are searching::  ${last.toLowerCase()}  ::for right and matching with ${movie.title.replace(/ .*/,'').toLowerCase()}`)
-                        if(!( (movie.title.replace(/ .*/,'').toLowerCase() == last.toLowerCase()))){
+                        if( (movie.title.replace(/ .*/,'').toLowerCase() == last.toLowerCase())){
                             console.log(`selected movie title: ${movie.title}`)
+                            tempArr.push(movie)
                             return movie
                     }
                    
                         
                     })
                     setDdMoviesRight(filterArray)
+                    dispatch(setDropMoviesRight(filterArray))
                     // console.log(`Right DD: ${JSON.stringify(filterArray)}`)
                     // dispatch(setMovies(filterArray))
                   return  JSON.stringify(filterArray)
@@ -148,6 +132,7 @@ function Movie({movie, selectMovie, key, right, left, mid}) {
         
     }
     const setMovie=()=>{  
+      
         const movie= document.getElementById(id).value
        
         const movieObj= JSON.parse(movie)
@@ -160,27 +145,34 @@ function Movie({movie, selectMovie, key, right, left, mid}) {
         //now get the first word or last word of title and set the movies to that which contains those 2 words
         // getFirstWord(movieObj.title)
         console.log(`last word we will search: ${getLastWord(movieObj.title)}`)
-        getMoviesF2(getFirstWord(movieObj.title), getLastWord(movieObj.title))
+        const f= getFirstWord(movieObj.title)
+        const l= getLastWord(movieObj.title)
+        getMoviesF2(f, l)
+        console.log(`DRR : ${dr}`)
         
          
     }
 
-
+    const [check, setCheck]= useState(false)
     useEffect(()=>{       
    
        getDropDownMovies()
        console.log(`key: ${key}`)
-       getMoviesLeft(getFirstWord(titleOpt))
+      
+       do{
+        getMoviesLeft(getFirstWord(titleOpt))
         
-       getMoviesRight(getLastWord(titleOpt))
+        // getMoviesRight(getLastWord(titleOpt))
+        
+      }while(check)
 
-        // getFirstWord(title)
-    },[titleOpt])
+        // getFirstWord(title) 
+    },[])
     return (
         <div className="movie">
              <div className="selectWrapper" >
                <span>Select Movie </span>
-           <select onChange={setMovie} style={{margin:"10px", padding:"5px"}} id={id} name="category" 
+           <select onChange={setMovie} style={{margin:"10px", padding:"5px"}} id={id} className="select" name="category" 
            value={titleOpt}
         //    ref={register({required: true})}
            >
@@ -216,7 +208,7 @@ function Movie({movie, selectMovie, key, right, left, mid}) {
               }
 
 { right &&
-               ddMoviesRight.length>0 && ddMoviesRight.map((movie, key)=>{
+               dr.length>0 && dr.map((movie, key)=>{
                 if(key==0){
                     movie.title= titleOpt
                 }
@@ -270,7 +262,8 @@ function Movie({movie, selectMovie, key, right, left, mid}) {
               } */}
 
             </select>
-
+        
+           
             
     
   </div>

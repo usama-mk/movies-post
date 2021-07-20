@@ -77,7 +77,7 @@ function Movies() {
           if(key<3){
             return (
               <div className={key==1?"pointer":""} >
-                <Movie movie={movie} right={(key==2)?true:false}  left={(key==0)?true:false} mid={(key==1)?true:false} selectMovie={selectMovie} />
+                <Movie movie={movie} right={(key==2)?true:false}  left={(key==0)?true:false} mid={(key==1)?true:false} selectMovie={selectMovie} selectedMovie={selectedMovie} />
               </div>
             );
           }
