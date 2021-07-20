@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { setMovies } from "../../actions";
 import Movie from "../../Components/Movie/Movie";
 import "./Movies.css";
@@ -23,6 +25,16 @@ function Movies() {
     console.log(`on movie click ${movie.title}`);
   };
   const postData = async () => {
+    toast.success('🚀 Successfully added the data to the database ', {
+      position: "bottom-center",
+      autoClose: true,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
+      clearInputs()
     const postObj= {
         title: selectedMovie.title,
         interest: interest,
@@ -41,22 +53,37 @@ function Movies() {
 
     response.json().then((data) => {
       console.log(data);
+     
+     
     });
   };
+
+  const clearInputs=()=>{
+    setInterest('')
+    setSynopsis('')
+    setSelectedMovie('')
+  }
+
   useEffect(() => {
     getMovies();
   }, []);
   return (
     <div className="moviesWrapper">
+      
+    
       {movies.length > 0 ? (
         <div className="movies">
-          {movies.map((movie) => {
+          {movies.map((movie, key) => {
+          if(key<3){
             return (
-              <div className="pointer" onClick={() => selectMovie(movie)}>
-                <Movie movie={movie} />
+              <div className={key==1?"pointer":""} >
+                <Movie movie={movie} right={(key==2)?true:false}  left={(key==0)?true:false} mid={(key==1)?true:false} selectMovie={selectMovie} />
               </div>
             );
+          }
           })}
+
+         
         </div>
       ) : (
         "Fetching Data.."
@@ -80,6 +107,7 @@ function Movies() {
             <div className="postButton pointer" onClick={postData}>
               POST
             </div>
+            <ToastContainer />
           </div>
         </div>
       )}
