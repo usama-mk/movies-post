@@ -179,9 +179,9 @@ function Movie({movie, selectMovie, key, right, left, mid, selectedMovie}) {
                {/* key == 0 */}
               { left &&
                ddMoviesLeft.length>0 && ddMoviesLeft.map((movie, key)=>{
-                if(key==0){
-                    movie.title= titleOpt
-                }
+                // if(key==0){
+                //     movie.title= titleOpt
+                // }
                
              return  (
                  <option  value={JSON.stringify(movie)} >{  movie.title}</option>
@@ -195,7 +195,7 @@ function Movie({movie, selectMovie, key, right, left, mid, selectedMovie}) {
               { mid &&
                ddMovies.length>0 && ddMovies.map((movie, key)=>{
                 if(key==0){
-                    movie.title= titleOpt
+                    movie.title= selectedMovie?.title
                 }
                
              return  (
@@ -209,9 +209,7 @@ function Movie({movie, selectMovie, key, right, left, mid, selectedMovie}) {
 
 { right &&
                dr.length>0 && dr.map((movie, key)=>{
-                if(key==0){
-                    movie.title= titleOpt
-                }
+                
                
              return  (
                  <option  value={JSON.stringify(movie)} >{  movie.title}</option>
@@ -267,13 +265,51 @@ function Movie({movie, selectMovie, key, right, left, mid, selectedMovie}) {
             
     
   </div>
-            <img onClick={()=>{setMovie()}}  src={IMG_API + poster_pathOpt} alt={titleOpt} />
+            {/* <img onClick={()=>{setMovie()}}  src={IMG_API + poster_pathOpt} alt={titleOpt} />
             <div className="movie info">
                 <h3>{titleOpt}</h3>
                 <h4>Ratings: {voteAverageOpt}</h4>
            
                 <div  className="overview">{overviewOpt}</div>
+            </div> */}
+
+             {
+               left &&
+               <div>
+                    <img onClick={()=>{setMovie()}}  src={IMG_API + ddMoviesLeft[1]?.poster_path} alt={titleOpt} />
+            <div className="movie info">
+                <h3>{ddMoviesLeft[1]?.title}</h3>
+                <h4>Ratings: {ddMoviesLeft[1]?.vote_average}</h4>
+           
+                <div  className="overview">{ddMoviesLeft[1]?.overview}</div>
             </div>
+               </div>
+           }
+           {
+               mid &&
+               <div>
+                    <img onClick={()=>{setMovie()}}  src={IMG_API + selectedMovie?.poster_path} alt={titleOpt} />
+            <div className="movie info">
+                <h3>{ selectedMovie?.title}</h3>
+                <h4>Ratings: { selectedMovie?.vote_average}</h4>
+           
+                <div  className="overview">{ selectedMovie?.overview}</div>
+            </div>
+               </div>
+           }
+
+{
+               right &&
+               <div>
+                    <img onClick={()=>{setMovie()}}  src={IMG_API + dr[0]?.poster_path} alt={titleOpt} />
+            <div className="movie info">
+                <h3>{dr[0]?.title}</h3>
+                <h4>Ratings: {dr[0]?.vote_average}</h4>
+           
+                <div  className="overview">{dr[0]?.overview}</div>
+            </div>
+               </div>
+           }
         </div>
     )
 }
