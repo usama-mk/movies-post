@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { setDropMoviesRight, setMovies } from '../../actions';
 import { FEATURED_API, SEARCH_API } from '../../Pages/Movies/Movies';
+import ph from '../../Assets/placeholder.jpg'
 import './Movie.css'
 
 function Movie({movie, selectMovie, key, right, left, mid, selectedMovie}) {
@@ -37,52 +38,38 @@ function Movie({movie, selectMovie, key, right, left, mid, selectedMovie}) {
                     getMoviesLeft(first)
                     getMoviesRight(last)
                   return  filterArray
-                    // setMovies(filterArray)
                 }
         const moviesRes= await fetch(FEATURED_API);
         const moviesObj= await moviesRes.json();
-        // console.log(moviesObj)
-        // setMovies(moviesObj.results)
     }
 
     const getMoviesLeft= async (first)=>{
         if(first){
-            // dispatch(setMovies([]))
                     const moviesRes= await fetch(SEARCH_API + first);
                     const moviesObj= await moviesRes.json();
                     const moviesArray=moviesObj.results
                     const filterArray= moviesArray.filter((movie)=>{
-                        if( (movie.title.replace(/ .*/,'')==first)){
+                        if( (getLastWord(movie.title).toLowerCase()==first.toLowerCase())){
+                            console.log(`left movies titles: ${movie.title}`)
                                 return movie
                         }
                         
                     })
                     setDdMoviesLeft(filterArray)
-                    // console.log(`left DD: ${filterArray}`)
-                    // dispatch(setMovies(filterArray))
                   return  JSON.stringify(filterArray)
-                    // setMovies(filterArray)
                 }
         const moviesRes= await fetch(FEATURED_API);
         const moviesObj= await moviesRes.json();
         
-        // setMovies(moviesObj.results)
     }
 
     const getMoviesRight= async (last)=>{
         if(last){
-            // dispatch(setMovies([]))
                     const moviesRes= await fetch(SEARCH_API + last);
                     const moviesObj= await moviesRes.json();
                     const moviesArray=moviesObj.results
                     var tempArr=[]
                     const filterArray= moviesArray.filter((movie)=>{
-                        // const get= getFirstWord(movie.title.replace(/ .*/,''))
-                        // console.log(`thisssssss first from array: ${get} & last we search: ${last}`)
-                        // if( (get==last)){        
-                        //     console.log(`afterrrrrrr this title: ${movie.title}`)      
-                        //         return movie
-                        // }
                         console.log(`we are searching::  ${last.toLowerCase()}  ::for right and matching with ${movie.title.replace(/ .*/,'').toLowerCase()}`)
                         if( (movie.title.replace(/ .*/,'').toLowerCase() == last.toLowerCase())){
                             console.log(`selected movie title: ${movie.title}`)
@@ -94,25 +81,17 @@ function Movie({movie, selectMovie, key, right, left, mid, selectedMovie}) {
                     })
                     setDdMoviesRight(filterArray)
                     dispatch(setDropMoviesRight(filterArray))
-                    // console.log(`Right DD: ${JSON.stringify(filterArray)}`)
-                    // dispatch(setMovies(filterArray))
                   return  JSON.stringify(filterArray)
-                    // setMovies(filterArray)
                 }
         const moviesRes= await fetch(FEATURED_API);
         const moviesObj= await moviesRes.json();
         
-        // setMovies(moviesObj.results)
+
     }
 
     
-    
-
-    // const {register, handleSubmit, errors, reset} = useForm();
     const getFirstWord=(totalWords)=>{ 
-        // console.log(totalWords)
         var firstWord = totalWords.replace(/ .*/,'');
-        // console.log(`First Word of title: ${firstWord}`)
         return firstWord;
 
     }
@@ -126,7 +105,6 @@ function Movie({movie, selectMovie, key, right, left, mid, selectedMovie}) {
          
         const moviesRes= await fetch(FEATURED_API);
         const moviesObj= await moviesRes.json();
-        // console.log(moviesObj)
         setDdMovies(moviesObj.results)
        
         
@@ -141,9 +119,6 @@ function Movie({movie, selectMovie, key, right, left, mid, selectedMovie}) {
         SetPoster_pathOpt(movieObj.poster_path)
         setVoteAverageOpt(movieObj.vote_average)
         setOverviewOpt(movieObj.overview)
-        // console.log(`title: ${movieObj.title}`)
-        //now get the first word or last word of title and set the movies to that which contains those 2 words
-        // getFirstWord(movieObj.title)
         console.log(`last word we will search: ${getLastWord(movieObj.title)}`)
         const f= getFirstWord(movieObj.title)
         const l= getLastWord(movieObj.title)
@@ -161,12 +136,9 @@ function Movie({movie, selectMovie, key, right, left, mid, selectedMovie}) {
       
        do{
         getMoviesLeft(getFirstWord(titleOpt))
-        
-        // getMoviesRight(getLastWord(titleOpt))
-        
       }while(check)
 
-        // getFirstWord(title) 
+
     },[])
     return (
         <div className="movie">
@@ -174,14 +146,11 @@ function Movie({movie, selectMovie, key, right, left, mid, selectedMovie}) {
                <span>Select Movie </span>
            <select onChange={setMovie} style={{margin:"10px", padding:"5px"}} id={id} className="select" name="category" 
            value={titleOpt}
-        //    ref={register({required: true})}
+      
            >
-               {/* key == 0 */}
               { left &&
                ddMoviesLeft.length>0 && ddMoviesLeft.map((movie, key)=>{
-                // if(key==0){
-                //     movie.title= titleOpt
-                // }
+               
                
              return  (
                  <option  value={JSON.stringify(movie)} >{  movie.title}</option>
@@ -221,74 +190,29 @@ function Movie({movie, selectMovie, key, right, left, mid, selectedMovie}) {
               }
                 
 
-{/* {(key ==1) &&
-              
-             ddMovies.length>0 && ddMovies.map((movie, key)=>{
-                if(key==0){
-                    movie.title= titleOpt
-                }
-               
-             return  (
-                 <option  value={JSON.stringify(movie)} >{  movie.title}</option>
-             );
-                
-            })
-              }
-
-{(key ==3) &&
-              ddMoviesLeft.length>0? ddMoviesLeft.length>0 && ddMoviesLeft.map((movie, key)=>{
-                if(key==0){
-                    movie.title= titleOpt
-                }
-               
-             return  (
-                 <option  value={JSON.stringify(movie)} >{  movie.title}</option>
-             );
-                
-            })
-            :
-             ddMovies.length>0 && ddMovies.map((movie, key)=>{
-                if(key==0){
-                    movie.title= titleOpt
-                }
-               
-             return  (
-                 <option  value={JSON.stringify(movie)} >{  movie.title}</option>
-             );
-                
-            })
-              } */}
-
             </select>
         
            
             
     
   </div>
-            {/* <img onClick={()=>{setMovie()}}  src={IMG_API + poster_pathOpt} alt={titleOpt} />
-            <div className="movie info">
-                <h3>{titleOpt}</h3>
-                <h4>Ratings: {voteAverageOpt}</h4>
-           
-                <div  className="overview">{overviewOpt}</div>
-            </div> */}
 
              {
                left &&
                <div>
-                    <img   src={IMG_API + ddMoviesLeft[1]?.poster_path} alt={titleOpt} />
+                    <img   src={IMG_API + ddMoviesLeft[0]?.poster_path} alt={titleOpt} />
             <div className="movie info">
-                <h3>{ddMoviesLeft[1]?.title}</h3>
-                <h4>Ratings: {ddMoviesLeft[1]?.vote_average}</h4>
+                <h3>{ddMoviesLeft[0]?.title}</h3>
+                <h4>Ratings: {ddMoviesLeft[0]?.vote_average}</h4>
            
-                <div  className="overview">{ddMoviesLeft[1]?.overview}</div>
+                <div  className="overview">{ddMoviesLeft[0]?.overview}</div>
             </div>
                </div>
            }
            {
                mid &&
                <div>
-                    <img   src={IMG_API + selectedMovie?.poster_path} alt={titleOpt} />
+                    <img   src={selectedMovie?IMG_API + selectedMovie?.poster_path: ph} alt={titleOpt} />
             <div className="movie info">
                 <h3>{ selectedMovie?.title}</h3>
                 <h4>Ratings: { selectedMovie?.vote_average}</h4>
@@ -301,7 +225,7 @@ function Movie({movie, selectMovie, key, right, left, mid, selectedMovie}) {
 {
                right &&
                <div>
-                    <img  src={IMG_API + dr[0]?.poster_path} alt={titleOpt} />
+                    <img  src={dr[0]?IMG_API + dr[0]?.poster_path:ph} alt={titleOpt} />
             <div className="movie info">
                 <h3>{dr[0]?.title}</h3>
                 <h4>Ratings: {dr[0]?.vote_average}</h4>

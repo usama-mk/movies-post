@@ -1,8 +1,27 @@
 .App{
   padding: 20px;
- 
+  height: 100vh;
+  transition:0.7s;
+
 }
 .moviesContainer{
   display: flex;
   justify-content: center;
+}
+
+.darkModeWrapper{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-direction: column;
+  margin-top:0px;
+}
+.darkModeWrapper>h2{
+  margin-top:0px;
+}
+.darkMode{
+  background-color: #38343c;
+  height:100vh;
+  overflow:auto;
+  transition:0.7s;
 }

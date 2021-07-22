@@ -12,6 +12,7 @@ function Movies() {
   const [selectedMovie, setSelectedMovie] = useState("");
   const [interest, setInterest] = useState("");
   const [synopsis , setSynopsis ] = useState("");
+  const dr = useSelector((state)=> state.ddRight)
   const movies = useSelector((state) => state.movies);
   const dispatch = useDispatch();
   const getMovies = async () => {
@@ -25,16 +26,7 @@ function Movies() {
     console.log(`on movie click ${movie.title}`);
   };
   const postData = async () => {
-    toast.success('🚀 Successfully added the data to the database ', {
-      position: "bottom-center",
-      autoClose: true,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      });
-      clearInputs()
+    
     const postObj= {
         MovieTitle: selectedMovie.title,
         PostTitle: interest,
@@ -53,7 +45,16 @@ function Movies() {
 
     response.json().then((data) => {
       console.log(data);
-     
+      toast.success('🚀 Successfully added the data to the database ', {
+      position: "bottom-center",
+      autoClose: true,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      });
+      clearInputs()
      
     });
   };
@@ -64,19 +65,20 @@ function Movies() {
     // setSelectedMovie('')
   }
 
+ 
+
   useEffect(() => {
     getMovies();
   }, []);
   return (
     <div className="moviesWrapper">
-      
     
       {movies.length > 0 ? (
         <div className="movies">
           {movies.map((movie, key) => {
           if(key<3){
             return (
-              <div className={key==1?"":""} >
+              <div>
                 <Movie movie={movie} right={(key==2)?true:false}  left={(key==0)?true:false} mid={(key==1)?true:false} selectMovie={selectMovie} selectedMovie={selectedMovie} />
               </div>
             );
@@ -91,7 +93,7 @@ function Movies() {
 
       {movies.length > 0 && (
         <div className="moviesData">
-          <h1 className="center">{selectedMovie.title}</h1>
+          <h1 className="center">{`${selectedMovie && selectedMovie?.title} ${dr[0]?.title ? dr[0]?.title:''}`}</h1>
           <h5>
             Title of the post - This should be a joke or clue or something to
             catch peoples interest
@@ -115,22 +117,6 @@ function Movies() {
   );
 }
 
-// export const getMovies= async (title)=>{
-//     if(title){
-//         const moviesRes= await fetch(FEATURED_API);
-//         const moviesObj= await moviesRes.json();
-//         const moviesArray=moviesObj.results
-//         moviesArray.filter((movie)=>{
-//             if(movie.title)
-//             return
-//         })
-//         setMovies(moviesObj.results)
-//     }
-//     const moviesRes= await fetch(FEATURED_API);
-//     const moviesObj= await moviesRes.json();
-//     console.log(moviesObj)
-//     return(moviesObj.results)
-// }
 export const FEATURED_API =
   "https://api.themoviedb.org/3/discover/movie?/sort_by=popularity.dsc&api_key=04c35731a5ee918f014970082a0088b1&page=1,2,3";
 
