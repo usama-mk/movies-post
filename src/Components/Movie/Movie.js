@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { setDropMoviesRight, setMovies } from '../../actions';
+import { setDropMoviesLeft, setDropMoviesRight, setMovies } from '../../actions';
 import { FEATURED_API, SEARCH_API } from '../../Pages/Movies/Movies';
 import ph from '../../Assets/placeholder.jpg'
 import './Movie.css'
@@ -56,6 +56,7 @@ function Movie({movie, selectMovie, key, right, left, mid, selectedMovie}) {
                         
                     })
                     setDdMoviesLeft(filterArray)
+                    dispatch(setDropMoviesLeft(filterArray))
                   return  JSON.stringify(filterArray)
                 }
         const moviesRes= await fetch(FEATURED_API);
@@ -200,7 +201,7 @@ function Movie({movie, selectMovie, key, right, left, mid, selectedMovie}) {
              {
                left &&
                <div>
-                    <img   src={IMG_API + ddMoviesLeft[0]?.poster_path} alt={titleOpt} />
+                    <img   src={ddMoviesLeft[0] ? IMG_API + ddMoviesLeft[0]?.poster_path: ph} alt={titleOpt} />
             <div className="movie info">
                 <h3>{ddMoviesLeft[0]?.title}</h3>
                 <h4>Ratings: {ddMoviesLeft[0]?.vote_average}</h4>

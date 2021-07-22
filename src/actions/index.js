@@ -11,3 +11,10 @@ export const setDropMoviesRight=(pl)=>{
         payload: pl
     }
 }
+
+export const setDropMoviesLeft=(pl)=>{
+    return {
+        type: "SET_DROP_MOVIES_LEFT",
+        payload: pl
+    }
+}

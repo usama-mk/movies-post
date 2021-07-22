@@ -13,6 +13,7 @@ function Movies() {
   const [interest, setInterest] = useState("");
   const [synopsis , setSynopsis ] = useState("");
   const dr = useSelector((state)=> state.ddRight)
+  const dl = useSelector((state)=> state.ddLeft)
   const movies = useSelector((state) => state.movies);
   const dispatch = useDispatch();
   const getMovies = async () => {
@@ -26,9 +27,9 @@ function Movies() {
     console.log(`on movie click ${movie.title}`);
   };
   const postData = async () => {
-    
+    const title= ` ${dl[0]?.title ? dl[0]?.title:''} ${selectedMovie && selectedMovie?.title} ${dr[0]?.title ? dr[0]?.title:''}`
     const postObj= {
-        MovieTitle: selectedMovie.title,
+        MovieTitle: title,
         PostTitle: interest,
         Synopsis: synopsis
     }
@@ -93,7 +94,7 @@ function Movies() {
 
       {movies.length > 0 && (
         <div className="moviesData">
-          <h1 className="center">{`${selectedMovie && selectedMovie?.title} ${dr[0]?.title ? dr[0]?.title:''}`}</h1>
+          <h1 className="center">{` ${dl[0]?.title ? dl[0]?.title:''} ${selectedMovie && selectedMovie?.title} ${dr[0]?.title ? dr[0]?.title:''}`}</h1>
           <h5>
             Title of the post - This should be a joke or clue or something to
             catch peoples interest
