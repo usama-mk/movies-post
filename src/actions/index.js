@@ -18,3 +18,10 @@ export const setDropMoviesLeft=(pl)=>{
         payload: pl
     }
 }
+
+export const setSelectedLeft=(pl)=>{
+    return {
+        type: "SET_SELECTED_LEFT",
+        payload: pl
+    }
+}
